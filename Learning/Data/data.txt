@@ -1,0 +1,19 @@
+data :
+http://www.raspberryturk.com/
+
+https://www.youtube.com/watch?v=XfMC8GCnhLw&t=133s ( check video description  )
+
+
+
+https://www.youtube.com/watch?v=EnYui0e73Rs&list=PLBwF487qi8MGU81nDGaeNE1EnNEPYWKY_ ( chess Engine videos ) code: https://github.com/mikolaj-skrzypczak/chess-engine
+
+
+
+
+https://github.com/LordDarkula/KnightSky ( chess Engine using DL)
+
+
+
+
+
+

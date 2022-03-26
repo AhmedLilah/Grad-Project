@@ -128,9 +128,7 @@ spherical_coordinates calculateAngles (cartesian_coordinates coords)
  spherical_coordinates * newPath = malloc(stepDenominator*3* sizeof(spherical_coordinates));
  stepSize_Z_up= (ZH-currentPos.Z)/stepDenominator ;
  for(int i = 0 ; i<stepDenominator; i++)
-{ if(AlertAngle == true);
-   AlertAngle = false ;
-   break;
+{ 
   movePos_Z_up= currentPos.Z + ((i+1)*stepSize_Z_up );
   cartesian_coordinates move_cord = {currentPos.X ,currentPos.Y ,movePos_Z_up};
   newPath[i] = calculateAngles(move_cord);

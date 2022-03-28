@@ -2,14 +2,15 @@ import numpy as np
 import cv2
 
 
-# from picamera import PiCamera
-# from time import sleep
-#camera = PiCamera ()
-#camera.resolution = (1080 , 1080)
-#camera.start_preview ()
-#camera.capture ('/home/pi/Desktop/V8.2/Init'+ i +'.jpg' )
-#camera.stop_preview ()
-
+def captureImage(showImage = True ):
+    cap = cv2.VideoCapture(0) # video capture source camera (Here webcam of laptop) 
+    ret,frame = cap.read()
+    if showImage:
+        cv2.imshow('img1',frame) #display the captured image
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+    cap.release()
+    return frame
 
 def splitBoard(image, inputMode = 'image', returnMode = 'sotre', showCells = True, name = ''):
     cells = []
@@ -148,3 +149,4 @@ if __name__ == '__main__':
     if ret:
         img = fourPointsTransform(img, pts, returnMode = 'image', showWarpedImage= True)
         splitBoard(img, 'image', 'store', True, name='test')
+    captureImage()

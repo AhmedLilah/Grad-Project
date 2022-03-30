@@ -1,9 +1,16 @@
 from ImageHelpers import *
+from gpiozero import Button 
+from os import sleep
+
+captureSwitch = Button(2)
 
 if __name__ == '__main__':
-    img = captureImage(showImage= True)
-    ret , pts = findPoints('chpic.jpg', inputMode= 'path', showPoints= True)
-    #img = cv2.imread("chpic.jpg")
-    if ret:
-        img = fourPointsTransform(img, pts, returnMode = 'image', showWarpedImage= True)
-        splitBoard(img, 'image', 'store', True, name='test')
+    i = 0 
+    while (True):
+        if capturSwitch.is_pressed:
+            img = captureImage(showImage= True)
+            ret , pts = findPoints(image= img, inputMode= 'image', showPoints= False)
+            if ret:
+                img = fourPointsTransform(image= img, pts= pts, returnMode = 'image', showWarpedImage= False)
+                splitBoard(img, 'image', 'store', True, name='Board' + str(i) + 'Square')
+                i += 1

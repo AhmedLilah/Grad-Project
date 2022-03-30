@@ -13,6 +13,14 @@ def captureImage(showImage = True ):
     return frame
 
 def splitBoard(image, inputMode = 'image', returnMode = 'sotre', showCells = True, name = ''):
+    '''
+    @param: image >>> input image or image path
+    @param: inputMode >>> chose to use image or path as input 
+    @param: returnMode >>> chose whether to return the image of save it to file
+    @param: showCells >>> chose to show the images for debugging or not 
+    @param: name >>> name of file if inputMode is "path"
+    @return: list of np.arrays representing the board squares
+    '''
     cells = []
     img = np.array(0)
     if inputMode == 'image':

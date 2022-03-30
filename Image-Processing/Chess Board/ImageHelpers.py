@@ -1,5 +1,6 @@
 import numpy as np 
 import cv2
+from copy import deepcopy
 
 
 def captureImage(showImage = True ):
@@ -24,10 +25,10 @@ def splitBoard(image, inputMode = 'image', returnMode = 'sotre', showCells = Tru
     cells = []
     img = np.array(0)
     if inputMode == 'image':
-        img = image
+        img = deepcopy(image)
 
     elif inputMode == 'path':
-        img = cv2.imread(image)
+        img = deepcopy(cv2.imread(image))
 
     counter = 0 
     for i in range(1,9):
@@ -58,12 +59,12 @@ def findPoints( image ,inputMode = 'path', showPoints= False ) :
 
     # This is a termination criteria
     criteria = ( cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER ,30 , 0.001)
-
+    
     if inputMode == 'path':
-        img = cv2.imread (image) # Reads the image
+        img = deepcopy(cv2.imread (image)) # Reads the image
         
     elif inputMode == 'image':
-        img = image
+        img = deepcopy(image)
 
     gray = cv2.cvtColor (img ,cv2.COLOR_BGR2GRAY ) # Converts the image to grayscale .
     ret = False
@@ -152,7 +153,7 @@ def fourPointsTransform ( image , pts, returnMode = 'image', showWarpedImage = F
 
 if __name__ == '__main__':
     img = cv2.imread("chpic.jpg")
-    ret , pts = findPoints('chpic.jpg', inputMode= 'path', showPoints= True)
+    ret , pts = findPoints(img, inputMode= 'image', showPoints= True)
     #img = cv2.imread("chpic.jpg")
     if ret:
         img = fourPointsTransform(img, pts, returnMode = 'image', showWarpedImage= True)

@@ -1,6 +1,10 @@
 #include <Servo.h>
 #include <Wire.h>
 
+int PickUp_time ;
+int Drop_time;
+int Rest_time;
+
 //first position
   int index_column_p1;
   int index_row_p1 ;
@@ -37,7 +41,7 @@ spherical_coordinates  calculateAngles (cartesian_coordinates);
 cartesian_coordinates  convert_block_index_into_coords (int , int);
 void ELIMINATION (cartesian_coordinates , cartesian_coordinates);
 void MovePiece (cartesian_coordinates , cartesian_coordinates);
-Servo myservo_1, myservo_2, myservo_3 ;
+Servo myservo_1, myservo_2, myservo_3,Gripper_servo ;
 
 double pi = 3.142857143;
 double ZH = 0.130;
@@ -47,6 +51,7 @@ void setup() {
   myservo_1 .attach(9);
   myservo_2 .attach(10);
   myservo_3.attach(11);
+  Gripper_servo.attach(6);
   Wire.begin(8);                // join i2c bus with address #8
   Wire.onReceive(receiveChessNotation); // register event
 }
@@ -143,12 +148,12 @@ for(int i = 0 ; i<stepDenominator; i++)
 // function that executes whenever data is received from master
 // this function is registered as an event, see setup()
 void receiveChessNotation(int howMany) {
-
   char* ChessNotation =(char*)malloc(5*sizeof(char));
+  cartesian_coordinates first_position_c_coords, second_position_c_coords;
   while (1 < Wire.available()) { 
-    
-     ChessNotation = Wire.read(); 
-   
+    for(int i=0;i<5;i++)
+  { ChessNotation[i] = Wire.read(); }
+   /*****************************************/
     //first position
      index_column_p1 =ChessNotation[0] - 97;
      index_row_p1 = ChessNotation[1];
@@ -157,6 +162,18 @@ void receiveChessNotation(int howMany) {
      index_row_p2 = ChessNotation[3];
     //Move Type
      move_type = ChessNotation[4]; 
+   /****************************************/
+ first_position_c_coords = convert_block_index_into_coords (index_row_p1 , index_column_p1);
+ second_position_c_coords = convert_block_index_into_coords(index_row_p2 , index_column_p2);
+
+ switch(move_type)
+  {case 120:   //ascii code for letter x
+  {ELIMINATION(first_position_c_coords,second_position_c_coords);}
+  case 109:   //ascii code for letter m
+  {MovePiece(first_position_c_coords,second_position_c_coords);}
+  }
+ 
+     
   }
 }
 
@@ -175,50 +192,55 @@ cartesian_coordinates  convert_block_index_into_coords (int row_index_pos , int 
 void ELIMINATION (cartesian_coordinates attackerPos, cartesian_coordinates executedPos )
 {
 spherical_coordinates* ELIMINATION_path_1 = pathFinder( homePos, executedPos );
-  for(int i = 0 ; i<stepDenominator*3; i++)
+  for(int i = 0 ; i<stepDenominator; i++)
   {
     myservo_1.write(ELIMINATION_path_1[i].th1);
     myservo_2.write(ELIMINATION_path_1[i].th2);
     myservo_3.write(ELIMINATION_path_1[i].th3);
+    Gripper_servo.writeMicroseconds(PickUp_time);
     delay(stepTime);
   }
 
 spherical_coordinates* ELIMINATION_path_2 = pathFinder( executedPos ,KillZone);
-for(int i = 0 ; i<stepDenominator*3; i++)
+for(int i = 0 ; i<stepDenominator; i++)
   {
     myservo_1.write(ELIMINATION_path_2[i].th1);
     myservo_2.write(ELIMINATION_path_2[i].th2);
     myservo_3.write(ELIMINATION_path_2[i].th3);
+    Gripper_servo.writeMicroseconds(Drop_time);
     delay(stepTime);
   }
 
 
 spherical_coordinates* ELIMINATION_path_3 = pathFinder( KillZone,attackerPos);
-for(int i = 0 ; i<stepDenominator*3; i++)
+for(int i = 0 ; i<stepDenominator; i++)
   {
     myservo_1.write(ELIMINATION_path_3[i].th1);
     myservo_2.write(ELIMINATION_path_3[i].th2);
     myservo_3.write(ELIMINATION_path_3[i].th3);
+    Gripper_servo.writeMicroseconds(PickUp_time);
     delay(stepTime);
   }
 
 
   spherical_coordinates* ELIMINATION_path_4 = pathFinder(attackerPos,executedPos);
-for(int i = 0 ; i<stepDenominator*3; i++)
+for(int i = 0 ; i<stepDenominator; i++)
   {
     myservo_1.write(ELIMINATION_path_4[i].th1);
     myservo_2.write(ELIMINATION_path_4[i].th2);
     myservo_3.write(ELIMINATION_path_4[i].th3);
+    Gripper_servo.writeMicroseconds(Drop_time);
     delay(stepTime);
   }
 
 
  spherical_coordinates* ELIMINATION_path_5 = pathFinder(executedPos , homePos);
-for(int i = 0 ; i<stepDenominator*3; i++)
+for(int i = 0 ; i<stepDenominator; i++)
   {
     myservo_1.write(ELIMINATION_path_5[i].th1);
     myservo_2.write(ELIMINATION_path_5[i].th2);
     myservo_3.write(ELIMINATION_path_5[i].th3);
+    Gripper_servo.writeMicroseconds(Rest_time);
     delay(stepTime);
   }
 
@@ -234,38 +256,37 @@ void MovePiece (cartesian_coordinates targetPos, cartesian_coordinates attackerP
 {
 
 spherical_coordinates* MovePiece_path_1 = pathFinder( homePos,attackerPos );
-  for(int i = 0 ; i<stepDenominator*3; i++)
+  for(int i = 0 ; i<stepDenominator; i++)
   {
     myservo_1.write(MovePiece_path_1[i].th1);
     myservo_2.write(MovePiece_path_1[i].th2);
     myservo_3.write(MovePiece_path_1[i].th3);
+    Gripper_servo.writeMicroseconds(PickUp_time);
     delay(stepTime);
   }
 
 spherical_coordinates* MovePiece_path_2 = pathFinder(attackerPos,targetPos);
-for(int i = 0 ; i<stepDenominator*3; i++)
+for(int i = 0 ; i<stepDenominator; i++)
   {
     myservo_1.write(MovePiece_path_2[i].th1);
     myservo_2.write(MovePiece_path_2[i].th2);
     myservo_3.write(MovePiece_path_2[i].th3);
+    Gripper_servo.writeMicroseconds(Drop_time);
     delay(stepTime);
   }
 
 
 spherical_coordinates* MovePiece_path_3 = pathFinder(targetPos , homePos);
-for(int i = 0 ; i<stepDenominator*3; i++)
+for(int i = 0 ; i<stepDenominator; i++)
   {
     myservo_1.write(MovePiece_path_3[i].th1);
     myservo_2.write(MovePiece_path_3[i].th2);
     myservo_3.write(MovePiece_path_3[i].th3);
+    Gripper_servo.writeMicroseconds(Rest_time);
     delay(stepTime);
   }
-
-
-
-
-  
-  
 }
+
+
 
 

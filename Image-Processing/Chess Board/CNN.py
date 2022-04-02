@@ -1,9 +1,8 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers
+from keras import layers
 
 import matplotlib.pyplot as plt
 
@@ -34,6 +33,7 @@ def show():
 
 show()
 
+
 # model...
 model = keras.models.Sequential()
 model.add(layers.Conv2D(32, (3,3), strides=(1,1), padding="valid", activation='relu', input_shape=(32,32,3)))
@@ -62,9 +62,6 @@ model.fit(train_images, train_labels, epochs=epochs,
 
 # evaulate
 model.evaluate(test_images,  test_labels, batch_size=batch_size, verbose=2)
-
-
-
 
 
 '''

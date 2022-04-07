@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import numpy as np 
 import cv2
 from copy import deepcopy
@@ -101,7 +100,7 @@ def findPoints( image ,inputMode = 'path', showPoints= False ) :
         pts = np.array( [Top_Left, Top_Right, Bottom_Left, Bottom_Right], dtype="float32")
         return ret, pts
     else:
-        return False, NULL
+        return False, False
 
 def orderPoints(pts ) :
     # Initialise a list . The entries will be ordered so that the entries will be:

@@ -9,7 +9,7 @@ if __name__ == '__main__':
         # key = cv2.waitKey(0) # waits for a key to be pressed
         key = input('do you wnat to catpure (y or n): ')
         if key == 'y':
-            img = captureImage(showImage= True)
+            img = captureImage(showImage= False)
             ret , pts = findPoints(img, inputMode= 'image', showPoints= False)
             if ret:
                 img = fourPointsTransform(img, pts, returnMode = 'image', showWarpedImage= False)

@@ -1,7 +1,5 @@
 from ImageHelpers import *
 # from gpiozero import Button 
-from os import sleep
-
 # captureSwitch = Button(2)
 
 if __name__ == '__main__':
@@ -11,6 +9,7 @@ if __name__ == '__main__':
         k = cv2.waitKey(0) # waits for a key to be pressed
         if k == 10:
             img = captureImage(showImage= True)
+            cv2.imshow("captured image", img)
             ret , pts = findPoints(image= img, inputMode= 'image', showPoints= False)
             if ret:
                 img = fourPointsTransform(image= img, pts= pts, returnMode = 'image', showWarpedImage= False)

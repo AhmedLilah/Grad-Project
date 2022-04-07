@@ -10,7 +10,7 @@ if __name__ == '__main__':
         key = input('do you wnat to catpure (y or n): ')
         if key == 'y':
             img = captureImage(showImage= False)
-            cv2.imwrite('000000',img)
+            cv2.imwrite('000000.png',img)
             ret , pts = findPoints(img, inputMode= 'image', showPoints= False)
             if ret:
                 img = fourPointsTransform(img, pts, returnMode = 'image', showWarpedImage= False)

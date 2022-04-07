@@ -3,20 +3,18 @@ from ImageHelpers import *
 # captureSwitch = Button(2)
 
 if __name__ == '__main__':
-    i = 0 
+    i = 0
     while (True):
         # if capturSwitch.is_pressed:
-        k = cv2.waitKey(0) # waits for a key to be pressed
-        if k == 10:
+        # key = cv2.waitKey(0) # waits for a key to be pressed
+        key = input('do you wnat to catpure (y or n): ')
+        if key == 'y':
             img = captureImage(showImage= True)
-            cv2.imshow("captured image", img)
-            ret , pts = findPoints(image= img, inputMode= 'image', showPoints= False)
+            ret , pts = findPoints(img, inputMode= 'image', showPoints= False)
             if ret:
-                img = fourPointsTransform(image= img, pts= pts, returnMode = 'image', showWarpedImage= False)
+                img = fourPointsTransform(img, pts, returnMode = 'image', showWarpedImage= False)
                 splitBoard(img, 'image', 'store', True, name='Board' + str(i) + 'Square')
                 i += 1
-        elif k == 27:
+        elif key == 'n':
+            print('Data Collector Is Out...')
             break
-        else:
-            continue
-        

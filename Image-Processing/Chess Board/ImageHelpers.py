@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import numpy as np 
 import cv2
 from copy import deepcopy
@@ -83,22 +84,24 @@ def findPoints( image ,inputMode = 'path', showPoints= False ) :
             cv2.waitKey(0)
         cv2.destroyAllWindows ()
 
-    Top_Left_x=2* corners[0][0][0] - corners[8][0][0]
-    Top_Left_y = 2* corners[0][0][1] - corners[8][0][1]
-    Top_Right_x = 2* corners[6][0][0] - corners[12][0][0]
-    Top_Right_y = 2* corners[6][0][1] - corners[12][0][1]
-    Bottom_Left_x = 2* corners[42][0][0] - corners[36][0][0]
-    Bottom_Left_y = 2* corners[42][0][1] - corners[36][0][1]
-    Bottom_Right_x = 2* corners[48][0][0] - corners[40][0][0]
-    Bottom_Right_y = 2* corners[48][0][1] - corners[40][0][1]
-    Bottom_Left = ( Bottom_Left_x , Bottom_Left_y )
-    Bottom_Right = ( Bottom_Right_x , Bottom_Right_y )
-    Top_Left = ( Top_Left_x , Top_Left_y )
-    Top_Right = ( Top_Right_x , Top_Right_y )
-
-    pts = np.array( [Top_Left, Top_Right, Bottom_Left, Bottom_Right], dtype="float32")
-
-    return ret, pts
+    if ret:
+        Top_Left_x=2* corners[0][0][0] - corners[8][0][0]
+        Top_Left_y = 2* corners[0][0][1] - corners[8][0][1]
+        Top_Right_x = 2* corners[6][0][0] - corners[12][0][0]
+        Top_Right_y = 2* corners[6][0][1] - corners[12][0][1]
+        Bottom_Left_x = 2* corners[42][0][0] - corners[36][0][0]
+        Bottom_Left_y = 2* corners[42][0][1] - corners[36][0][1]
+        Bottom_Right_x = 2* corners[48][0][0] - corners[40][0][0]
+        Bottom_Right_y = 2* corners[48][0][1] - corners[40][0][1]
+        Bottom_Left = ( Bottom_Left_x , Bottom_Left_y )
+        Bottom_Right = ( Bottom_Right_x , Bottom_Right_y )
+        Top_Left = ( Top_Left_x , Top_Left_y )
+        Top_Right = ( Top_Right_x , Top_Right_y )
+    
+        pts = np.array( [Top_Left, Top_Right, Bottom_Left, Bottom_Right], dtype="float32")
+        return ret, pts
+    else:
+        return False, NULL
 
 def orderPoints(pts ) :
     # Initialise a list . The entries will be ordered so that the entries will be:

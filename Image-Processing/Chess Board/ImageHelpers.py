@@ -13,7 +13,7 @@ def captureImage(showImage = True ):
     cap.release()
     return frame
 
-def splitBoard(image, inputMode = 'image', returnMode = 'sotre', showCells = True, name = ''):
+def splitBoard(image, inputMode = 'image', returnMode = 'store', showCells = True, name = ''):
     '''
     @param: image >>> input image or image path
     @param: inputMode >>> chose to use image or path as input 
@@ -28,7 +28,7 @@ def splitBoard(image, inputMode = 'image', returnMode = 'sotre', showCells = Tru
         img = deepcopy(image)
 
     elif inputMode == 'path':
-        img = deepcopy(cv2.imread(image))
+        img = cv2.imread(image)
 
     counter = 0 
     for i in range(1,9):
@@ -41,11 +41,11 @@ def splitBoard(image, inputMode = 'image', returnMode = 'sotre', showCells = Tru
             
             # Unit Test code 
             cropedImage = np.array(img[x_1:x,y_1:y])
-            resizedImage = cv2.resize(cropedImage,(400,400))
+            resizedImage = cv2.resize(cropedImage,(50,50))
             if showCells:
                 cv2.imshow(name+str(counter),resizedImage)
-            if returnMode == "sotre":
-                cv2.imwrite(name+str(counter)+'.png' , cropedImage )
+            if returnMode == "store":
+                cv2.imwrite(name+str(counter)+'.png' , resizedImage )
             elif returnMode == "cells":
                 return cells
 

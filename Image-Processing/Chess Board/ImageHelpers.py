@@ -1,3 +1,4 @@
+from multiprocessing.connection import wait
 import numpy as np 
 import cv2
 from copy import deepcopy
@@ -12,6 +13,22 @@ def captureImage(showImage = True ):
         cv2.destroyAllWindows()
     cap.release()
     return frame
+def boardPreProcessor(board, showBoard = False):
+    Board = deepcopy(board)
+    cv2.imshow('board',Board)
+    gray = cv2.cvtColor(Board,cv2.COLOR_BGR2GRAY)
+    thresh = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,255,-25)
+    thresh2 = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY_INV,255,-25)
+    thresh_erode = cv2.erode(thresh,(5,5),iterations=1)
+    thresh_erode = cv2.dilate(thresh,(5,5),iterations=1)
+    normalBoard = cv2.erode(thresh2,(5,5),iterations=1)
+    invertedBoard = cv2.dilate(thresh2,(5,5),iterations=1)
+    normalBoard = cv2.cvtColor(normalBoard,cv2.COLOR_GRAY2BGR)
+    invertedBoard = cv2.cvtColor(invertedBoard,cv2.COLOR_GRAY2BGR)
+    if showBoard:
+        cv2.imshow('threh eroded',normalBoard)
+        cv2.imshow('threh eroded2',invertedBoard)
+    return normalBoard , invertedBoard
 
 def splitBoard(image, inputMode = 'image', returnMode = 'store', showCells = True, name = ''):
     '''
@@ -146,6 +163,8 @@ def fourPointsTransform ( image , pts, returnMode = 'image', showWarpedImage = F
     Warped = cv2.warpPerspective ( image , M , ( maxWidth , maxHeight ) )
     if showWarpedImage:
         cv2.imshow("Warped Image",Warped)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
     if returnMode == 'image':
         return Warped

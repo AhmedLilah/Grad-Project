@@ -77,23 +77,23 @@ import glob
 
 # # # frame = np.ones_like(ASL)*255
 
-cap = cv.VideoCapture(0)
-while(True):
-    ret,frame = cap.read()
-    frame_edge = cv.Canny(frame,100,70)
-    frame_gray = cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
-    frame_thresh = cv.adaptiveThreshold(frame_gray,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,cv.THRESH_BINARY,115,1)
-    face_detect = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
-    faces = face_detect.detectMultiScale(frame_gray,1.1,4)
-    for (x, y, w, h) in faces:
-        cv.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+# cap = cv.VideoCapture(0)
+# while(True):
+#     ret,frame = cap.read()
+#     frame_edge = cv.Canny(frame,100,70)
+#     frame_gray = cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
+#     frame_thresh = cv.adaptiveThreshold(frame_gray,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,cv.THRESH_BINARY,115,1)
+#     face_detect = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
+#     faces = face_detect.detectMultiScale(frame_gray,1.1,4)
+#     for (x, y, w, h) in faces:
+#         cv.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
     
-    cv.imshow('frame',frame)
-    # cv.imshow('frame_edge',frame_edge)
-    # cv.imshow('frame_thresh',frame_thresh)
-    ch = cv.waitKey(1)
-    if ch & 0xff == ord('q'):
-        break
+#     cv.imshow('frame',frame)
+#     # cv.imshow('frame_edge',frame_edge)
+#     # cv.imshow('frame_thresh',frame_thresh)
+#     ch = cv.waitKey(1)
+#     if ch & 0xff == ord('q'):
+#         break
 
 # bw = cv.imread('sudoku.png',0)
 # hight,width = bw.shape[0:2]
@@ -188,18 +188,18 @@ while(True):
 # fuzzy = cv.GaussianBlur(fuzzy,(5,5),sigmaX=5,sigmaY=5)
 # cv.imshow('fuzzy_blur',fuzzy)
 
-# board = cv.imread('board_0002.jpeg',1)
-# # board = cv.resize(board,(0,0),fx=0.5,fy=0.5)
-# cv.imshow('board',board)
-# gray = cv.cvtColor(board,cv.COLOR_BGR2GRAY)
-# thresh = cv.adaptiveThreshold(gray,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,cv.THRESH_BINARY,255,-25)
-# thresh2 = cv.adaptiveThreshold(gray,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,cv.THRESH_BINARY_INV,255,-25)
-# thresh_erode = cv.erode(thresh,(5,5),iterations=1)
-# thresh_erode = cv.dilate(thresh,(5,5),iterations=1)
-# thresh_erode2 = cv.erode(thresh2,(5,5),iterations=1)
-# thresh_erode2 = cv.dilate(thresh2,(5,5),iterations=1)
-# cv.imshow('threh eroded',thresh_erode)
-# cv.imshow('threh eroded2',thresh_erode2)
+board = cv.imread('BoardTest3.png',1)
+# board = cv.resize(board,(0,0),fx=0.5,fy=0.5)
+cv.imshow('board',board)
+gray = cv.cvtColor(board,cv.COLOR_BGR2GRAY)
+thresh = cv.adaptiveThreshold(gray,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,cv.THRESH_BINARY,255,-25)
+thresh2 = cv.adaptiveThreshold(gray,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,cv.THRESH_BINARY_INV,255,-25)
+thresh_erode = cv.erode(thresh,(5,5),iterations=1)
+thresh_erode = cv.dilate(thresh,(5,5),iterations=1)
+thresh_erode2 = cv.erode(thresh2,(5,5),iterations=1)
+thresh_erode2 = cv.dilate(thresh2,(5,5),iterations=1)
+cv.imshow('threh eroded',thresh_erode)
+cv.imshow('threh eroded2',thresh_erode2)
 # contours, hierarchy = cv.findContours(thresh_erode,cv.RETR_TREE,cv.CHAIN_APPROX_SIMPLE)
 # contours2, hierarchy2 = cv.findContours(thresh_erode2,cv.RETR_TREE,cv.CHAIN_APPROX_SIMPLE)
 # board2 = board.copy()
@@ -226,45 +226,45 @@ while(True):
 
 #****************************************************************
 # Load the image
-img = cv.imread('board_0001.jpeg') 
+# img = cv.imread('board_0001.jpeg') 
  
 # Create a copy of the image
-img_copy = np.copy(img)
+# img_copy = np.copy(img)
  
 # Convert to RGB so as to display via matplotlib
 # Using Matplotlib we can easily find the coordinates
 # of the 4 points that is essential for finding the 
 # transformation matrix
-img_copy = cv.cvtColor(img_copy,cv.COLOR_BGR2RGB)
+# img_copy = cv.cvtColor(img_copy,cv.COLOR_BGR2RGB)
  
-plt.imshow(img_copy)
+# plt.imshow(img_copy)
 
-# All points are in format [cols, rows]
-pt_A = [30, 250]
-pt_B = [30, 1380]
-pt_C = [900, 1220]
-pt_D = [900, 395]
-# Here, I have used L2 norm. You can use L1 also.
-width_AD = np.sqrt(((pt_A[0] - pt_D[0]) ** 2) + ((pt_A[1] - pt_D[1]) ** 2))
-width_BC = np.sqrt(((pt_B[0] - pt_C[0]) ** 2) + ((pt_B[1] - pt_C[1]) ** 2))
-maxWidth = max(int(width_AD), int(width_BC))
-height_AB = np.sqrt(((pt_A[0] - pt_B[0]) ** 2) + ((pt_A[1] - pt_B[1]) ** 2))
-height_CD = np.sqrt(((pt_C[0] - pt_D[0]) ** 2) + ((pt_C[1] - pt_D[1]) ** 2))
-maxHeight = max(int(height_AB), int(height_CD))
+# # All points are in format [cols, rows]
+# pt_A = [30, 250]
+# pt_B = [30, 1380]
+# pt_C = [900, 1220]
+# pt_D = [900, 395]
+# # Here, I have used L2 norm. You can use L1 also.
+# width_AD = np.sqrt(((pt_A[0] - pt_D[0]) ** 2) + ((pt_A[1] - pt_D[1]) ** 2))
+# width_BC = np.sqrt(((pt_B[0] - pt_C[0]) ** 2) + ((pt_B[1] - pt_C[1]) ** 2))
+# maxWidth = max(int(width_AD), int(width_BC))
+# height_AB = np.sqrt(((pt_A[0] - pt_B[0]) ** 2) + ((pt_A[1] - pt_B[1]) ** 2))
+# height_CD = np.sqrt(((pt_C[0] - pt_D[0]) ** 2) + ((pt_C[1] - pt_D[1]) ** 2))
+# maxHeight = max(int(height_AB), int(height_CD))
 
 
-input_pts = np.float32([pt_A, pt_B, pt_C, pt_D])
-output_pts = np.float32([[0, 0],
-                        [0, maxHeight - 1],
-                        [maxWidth - 1, maxHeight - 1],
-                        [maxWidth - 1, 0]])
-# Compute the perspective transform M
-M = cv.getPerspectiveTransform(input_pts,output_pts)
-out = cv.warpPerspective(img,M,(maxWidth, maxHeight),flags=cv.INTER_LINEAR)
-out =  cv.resize(out,(0,0),fx = 0.7, fy=0.7)
-img =  cv.resize(img,(0,0),fx = 0.7, fy=0.7)
-cv.imshow('warp_prespective_original',img)
-cv.imshow('warp_prespective',out)
+# input_pts = np.float32([pt_A, pt_B, pt_C, pt_D])
+# output_pts = np.float32([[0, 0],
+#                         [0, maxHeight - 1],
+#                         [maxWidth - 1, maxHeight - 1],
+#                         [maxWidth - 1, 0]])
+# # Compute the perspective transform M
+# M = cv.getPerspectiveTransform(input_pts,output_pts)
+# out = cv.warpPerspective(img,M,(maxWidth, maxHeight),flags=cv.INTER_LINEAR)
+# out =  cv.resize(out,(0,0),fx = 0.7, fy=0.7)
+# img =  cv.resize(img,(0,0),fx = 0.7, fy=0.7)
+# cv.imshow('warp_prespective_original',img)
+# cv.imshow('warp_prespective',out)
 
 # nline = 6
 # ncol = 6

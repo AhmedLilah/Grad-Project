@@ -3,6 +3,14 @@ import numpy as np
 import cv2
 from copy import deepcopy
 
+def playVideo():
+    cap = cv2.VideoCapture(0)
+    while(True):
+        ret, frame = cap.read()
+        cv2.imshow('frame',frame)
+        ch = cv2.waitKey(1)
+        if ch & 0xff == ord('q'):
+            break
 
 def captureImage(showImage = True ):
     cap = cv2.VideoCapture(0) # video capture source camera (Here webcam of laptop) 

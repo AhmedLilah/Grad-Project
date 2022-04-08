@@ -9,6 +9,7 @@ if __name__ == '__main__':
         # key = cv2.waitKey(0) # waits for a key to be pressed
         key = input('do you wnat to catpure (y or n): ')
         if key == 'y':
+            playVideo()
             img = captureImage(showImage= False)
             # img = cv2.imread("BoardTest2.png")
             cv2.imwrite('000000.png',img)

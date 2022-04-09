@@ -16,8 +16,9 @@ if __name__ == '__main__':
             procBoard,invProcBoard = boardPreProcessor(img, True)
             cv2.imwrite('000000pro.png',procBoard)
             cv2.imwrite('000000proInv.png',invProcBoard)
-            ret1 , pts1 = findPoints(procBoard, inputMode= 'image', showPoints= False)
-            ret2 , pts2 = findPoints(invProcBoard, inputMode= 'image', showPoints= False)
+            ret1 , pts1 = findPoints(img, inputMode= 'image', showPoints= False)
+            ret2 , pts2 = findPoints(procBoard, inputMode= 'image', showPoints= False)
+            ret3 , pts3 = findPoints(invProcBoard, inputMode= 'image', showPoints= False)
             # cv2.waitKey(0)
             # cv2.destroyAllWindows()
             if ret1:
@@ -28,6 +29,11 @@ if __name__ == '__main__':
             elif ret2 :
                 print("ret2 successful")
                 img = fourPointsTransform(img, pts2, returnMode = 'image', showWarpedImage= True)
+                splitBoard(img, 'image', 'store', True, name='Board' + str(i) + 'Square')
+                i += 1
+            elif ret3 :
+                print("ret3 successful")
+                img = fourPointsTransform(img, pts3, returnMode = 'image', showWarpedImage= True)
                 splitBoard(img, 'image', 'store', True, name='Board' + str(i) + 'Square')
                 i += 1
             else:

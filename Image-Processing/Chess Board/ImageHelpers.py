@@ -95,7 +95,7 @@ def findPoints( image ,inputMode = 'path', showPoints= False ) :
     ret = False
     
     # Find the chessboard inner corners
-    ret , corners = cv2.findChessboardCorners( gray , (7 ,7) )
+    ret , corners = cv2.findChessboardCornersSB( gray , (7 ,7), cv2.CALIB_CB_ADAPTIVE_THRESH + cv2.CALIB_CB_NORMALIZE_IMAGE + cv2.CALIB_CB_FILTER_QUADS )
     
     # If corners are found , object and image points are added .
     # This section is not needed but can provide futher understanding of the program

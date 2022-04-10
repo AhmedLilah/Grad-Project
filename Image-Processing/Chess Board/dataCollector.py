@@ -1,3 +1,4 @@
+from tkinter import Y
 from ImageHelpers import *
 # from gpiozero import Button 
 # captureSwitch = Button(2)
@@ -12,10 +13,10 @@ if __name__ == '__main__':
             playVideo()
             img = captureImage(showImage= False)
             # img = cv2.imread("BoardTest2.png")
-            cv2.imwrite('000000.png',img)
             procBoard,invProcBoard = boardPreProcessor(img, True)
-            cv2.imwrite('000000pro.png',procBoard)
-            cv2.imwrite('000000proInv.png',invProcBoard)
+            # cv2.imwrite('000000.png',img)
+            # cv2.imwrite('000000pro.png',procBoard)
+            # cv2.imwrite('000000proInv.png',invProcBoard)
             ret1 , pts1 = findPoints(img, inputMode= 'image', showPoints= False)
             ret2 , pts2 = findPoints(procBoard, inputMode= 'image', showPoints= False)
             ret3 , pts3 = findPoints(invProcBoard, inputMode= 'image', showPoints= False)
@@ -24,17 +25,17 @@ if __name__ == '__main__':
             if ret1:
                 print("ret1 successful")
                 img = fourPointsTransform(img, pts1, returnMode = 'image', showWarpedImage= True)
-                splitBoard(img, 'image', 'store', True, name='Board' + str(i) + 'Square')
+                splitBoard(img, 'image', 'return', True, name='Board' + str(i) + 'Square')
                 i += 1
             elif ret2 :
                 print("ret2 successful")
                 img = fourPointsTransform(img, pts2, returnMode = 'image', showWarpedImage= True)
-                splitBoard(img, 'image', 'store', True, name='Board' + str(i) + 'Square')
+                splitBoard(img, 'image', 'return', True, name='Board' + str(i) + 'Square')
                 i += 1
             elif ret3 :
                 print("ret3 successful")
                 img = fourPointsTransform(img, pts3, returnMode = 'image', showWarpedImage= True)
-                splitBoard(img, 'image', 'store', True, name='Board' + str(i) + 'Square')
+                splitBoard(img, 'image', 'return', True, name='Board' + str(i) + 'Square')
                 i += 1
             else:
                 print("board identification Failed")

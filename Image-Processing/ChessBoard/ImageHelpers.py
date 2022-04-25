@@ -188,6 +188,20 @@ def fourPointsTransform ( image , pts, returnMode = 'image', showWarpedImage = F
     elif returnMode == 'store':
         cv2.imwrite('Warped.png',Warped)
 
+def captureAiSequence():
+    img = captureImage(showImage= False)
+    ret1 , pts1 = findPoints(img, inputMode= 'image', showPoints= False)
+    if ret1:
+        print("ret1 successful")
+        img = fourPointsTransform(img, pts1, returnMode = 'image', showWarpedImage= False)
+        if img.shape != (1520,1520,3):
+            img = cv2.resize(img, (1520,1520,3))
+        img = (img/127) -1 
+        sequence = splitBoard(img, 'image', 'return', False)
+        return  sequence
+    else :
+        return 0
+
 if __name__ == '__main__':
     img = cv2.imread("chpic.jpg")
     ret , pts = findPoints(img, inputMode= 'image', showPoints= True)

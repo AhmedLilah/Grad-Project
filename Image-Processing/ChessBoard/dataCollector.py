@@ -16,7 +16,6 @@ if __name__ == '__main__':
             #img = cv2.imread('fname64.png')
             print ('shape: ',img.shape)
             # img = cv2.imread("BoardTest2.png")
-            procBoard,invProcBoard = boardPreProcessor(img, False)
             cv2.imwrite('./rawData/'+str(i)+'.png',img)
             ret1 , pts1 = findPoints(img, inputMode= 'image', showPoints= False)
             # cv2.waitKey(0)

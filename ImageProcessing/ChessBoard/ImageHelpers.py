@@ -63,6 +63,7 @@ def splitBoard(image, inputMode = 'image', returnMode = 'store', showCells = Tru
 
     counter = 0 
     pexilMargin = int(5/1550*img.shape[0])
+    
     for i in range(1,9):
         x = int(i/8 * img.shape[0]) - pexilMargin
         x_1 = int((i-1)/8 * img.shape[0]) + pexilMargin
@@ -70,18 +71,17 @@ def splitBoard(image, inputMode = 'image', returnMode = 'store', showCells = Tru
             y = int(j/8 * img.shape[1]) - pexilMargin
             y_1 = int((j-1)/8 * img.shape[0]) + pexilMargin
             cells.append(np.array(img[x_1:x,y_1:y]))
-            
             # Unit Test code 
             cropedImage = np.array(img[x_1:x,y_1:y])
             #resizedImage = cv2.resize(cropedImage,(50,50))
             if showCells:
                 cv2.imshow(name+str(counter),cropedImage)
+                counter += 1
             if returnMode == "store":
                 cv2.imwrite('./SplitedData/'+name+str(counter)+'.png' , cropedImage )
-            elif returnMode == "cells":
-                return cells
-
-            counter +=1
+                counter += 1
+    if returnMode == "cells":
+        return cells
             
     if showCells:
         cv2.waitKey(0)
@@ -194,10 +194,8 @@ def captureAiSequence():
     if ret1:
         print("ret1 successful")
         img = fourPointsTransform(img, pts1, returnMode = 'image', showWarpedImage= False)
-        if img.shape != (1520,1520,3):
-            img = cv2.resize(img, (1520,1520,3))
-        img = (img/127) -1 
-        sequence = splitBoard(img, 'image', 'return', False)
+        sequence = np.array(splitBoard(img, 'image', 'cells', False))
+        print('this is sequence shapeeeee : ',sequence.shape)
         return  sequence
     else :
         return 0

@@ -1,10 +1,8 @@
+import ImageProcessing.ChessBoard.ImageHelpers as im
 import numpy as np
-import sys
-sys.path.insert(0,'../../AI-ML')
-import AiHelpers as ai
+import cv2
+import AI.AiHelpers as ai
 
-sys.path.insert(0,'../../Image-Processing')
-import ImageHelpers as im
 class Board:    
     def __init__(self):
         self.C =[
@@ -37,9 +35,13 @@ class Board:
 
 def makeNewBoard(newBoard):
     colorDict = {0:'1', 1:'W', 2:'B'}
-    board = im.catureAiSequence()
+    tempBoard = im.captureAiSequence()
+    board = [x for x in range(64)]
+    for i in range(64):
+        board[i] = cv2.resize(tempBoard[i], (190,190)) / 127.0 - 1
     board = np.array(board)
-    board = np.reshape(board, (8,8))
+    print('the board shape is: ', board.shape)
+    board = np.reshape(board, (8,8,190,190,3))
     for i in range(8):
         for j in range(8):
             newBoard.UC[i][j] = colorDict[ai.runAiModel(board[i][j])]
@@ -58,14 +60,25 @@ def CompareBoards( newBoard, prevBoard, playerColor = 'B') :
     for i in range (0 ,8) :
         for j in range (0 ,8) :
             #If a square now holds a piece it didnt before , this is where a piece has moved .
-            if newBoard[i][j] == playerColor and prevBoard[i][j] != playerColor:
+            if newBoard.UC[i][j] == playerColor and prevBoard.UC[i][j] != playerColor:
                 NewRank = Ranks [i]
                 NewFile = Files [j]
 
             #If a square now doesn ’t hold a piece and it previously did , this is where a piece has moved from.
-            if newBoard.UC [i][j] != playerColor and prevBoard.UC [ i ][ j ] == playerColor:
+            if newBoard.UC[i][j] != playerColor and prevBoard.UC[i][j] == playerColor:
                 OldRank = Ranks [i]
                 OldFile = Files [j]
 
     newBoard.updateBoard( Ranks.index(NewRank), Files.index(NewFile), Ranks.index(OldRank), Files.index (OldFile), playerColor)
     return newBoard, [NewFile, NewRank, OldFile, OldRank]
+
+
+
+if __name__ == "__main__":
+    import numpy as np
+    import sys
+    sys.path.insert(0,'../../AI')
+    import AiHelpers as ai
+
+    sys.path.insert(0,'../../ImageProcessing/ChessBoard')
+    import ImageHelpers as im

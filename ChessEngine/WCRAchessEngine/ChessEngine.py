@@ -73,10 +73,19 @@ def findBestMove(game_state, valid_moves,WhiteToMove=True):
    valid_moves= SortingMoves(valid_moves)
    evalscore=findMoveNegaMaxAlphaBeta(game_state, valid_moves, DEPTH, -CHECKMATE, CHECKMATE ,WhiteToMove)
    #print("defrant bord poss :",C ,'selected score', evalscore)
+   if 'x' in next_move :
+      arm =  'c'
+   elif '=' in next_move :
+      arm =  'p'
+   else:
+      arm = 'm'
+
+   armMove = str(game_state.parse_san(next_move))
+   armMove = armMove + arm
    next_move=game_state.parse_san(next_move)
    print ( 'next_move :', next_move )
 
-   return next_move
+   return next_move,armMove
 
 
 def findMoveNegaMaxAlphaBeta(game_state, valid_moves, depth, alpha, beta ,WhiteMove):
@@ -181,6 +190,7 @@ def SetupEngine(path='/home/pi/Grad-Project/ChessEngine/WCRAchessEngine/nnue+sto
    setup stockfish chess engine 
    '''
    engine = chess.engine.SimpleEngine.popen_uci(path)
+   print ( ' engine loded sucssesfuly !!!!')
    return engine
 
 
@@ -202,7 +212,7 @@ def AIvsAI(depth,game_state,vs_Stockfish=True): # Ai vs Ai
       while not game_state.is_game_over(): # stockfish will play black 
 
          allMoves = game_state.legal_moves
-         bestMove = findBestMove(game_state,allMoves)
+         bestMove , _ = findBestMove(game_state,allMoves)
          MakeMove(game_state, bestMove )
          print(game_state)
          move= VsEngine (engine,game_state, 5)
@@ -214,7 +224,7 @@ def AIvsAI(depth,game_state,vs_Stockfish=True): # Ai vs Ai
       while not (game_state.is_game_over()) :
 
          allMoves = game_state.legal_moves
-         bestMove = findBestMove(game_state,allMoves)
+         bestMove , _ =  findBestMove(game_state,allMoves)
          MakeMove(game_state, bestMove )
          print(game_state)
          print('************************')
@@ -224,7 +234,7 @@ def AIvsAI(depth,game_state,vs_Stockfish=True): # Ai vs Ai
    return game
 
 #board = chess.Board()
-#AIvsAI(2,board)
+#AIvsAI(3,board,vs_Stockfish=False)
 
 
 

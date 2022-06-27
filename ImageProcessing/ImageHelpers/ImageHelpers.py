@@ -15,12 +15,12 @@ def playVideo():
 
 def captureImage(showImage = True ):
 
-    bashCmd = ['libcamera-still','-t', '1' ,'-o' ,'/home/pi/GP/Grad-Project/Image-Processing/ChessBoard/rawData/tempFrame.png']
+    bashCmd = ['libcamera-still', '-n','-o' ,'/home/pi/Grad-Project/ImageProcessing/rawData/tempFrame.png', '>', '/dev/null']
 
     process= subprocess.Popen(bashCmd, stdout=subprocess.PIPE)
 
     output,error= process.communicate()
-    frame = cv2.imread("/home/pi/GP/Grad-Project/Image-Processing/ChessBoard/rawData/tempFrame.png")
+    frame = cv2.imread("/home/pi/Grad-Project/ImageProcessing/rawData/tempFrame.png")
     if showImage:
         cv2.imshow('img1',frame) #display the captured image
         cv2.waitKey(0)
@@ -189,13 +189,12 @@ def fourPointsTransform ( image , pts, returnMode = 'image', showWarpedImage = F
         cv2.imwrite('Warped.png',Warped)
 
 def captureAiSequence():
-    img = captureImage(showImage= False)
+    img = captureImage(showImage= True)
     ret1 , pts1 = findPoints(img, inputMode= 'image', showPoints= False)
     if ret1:
         print("ret1 successful")
-        img = fourPointsTransform(img, pts1, returnMode = 'image', showWarpedImage= False)
+        img = fourPointsTransform(img, pts1, returnMode = 'image', showWarpedImage= True)
         sequence = np.array(splitBoard(img, 'image', 'cells', False))
-        print('this is sequence shapeeeee : ',sequence.shape)
         return  sequence
     else :
         return 0
